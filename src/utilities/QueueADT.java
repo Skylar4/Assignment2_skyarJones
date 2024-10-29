@@ -8,7 +8,21 @@ package utilities;
  *
  * @author jones
  */
-public class QueueADT {
+public interface  QueueADT<E>{
+    
+    
+    
+    public void queue(E object);
+    
+    
+    public void unqueue();
+            
+    public boolean isEmpty();
+    
+    public int size();
+    
+    public boolean isFull();
+    
     
     
     
