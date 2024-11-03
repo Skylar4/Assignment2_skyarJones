@@ -9,72 +9,46 @@ package utilities;
  * data structure
  * 
  * @author jones
- * @param <E> the data type that the queue will hold.
+ * @modified marian
+ * @param <T> the data type that the queue will hold.
  */
-public interface QueueADT<E> {
+public interface QueueADT<T> {
 
     /**
-     * This method will place the object at the back of the queue if the queue
-     * is full it should throw an exception.
+     * Adds an element to the end of the queue.
      *
-     * pre-conditions:
-     *  that the queue is not already full 
-     * 
-     * post-conditions:
-     *  the object has been added to the back of the queue 
-     *  the size is increased by 1
-     * @param object the item to be added.
+     * @param element the element to be added to the queue
+     * @throws NullPointerException if the specified element is null
      */
-    public void queue(E object);
+    void enqueue(T element);
 
     /**
-     * unqueue will remove the item at the front of the queue and return it.
+     * Removes and returns the front element of the queue.
      *
-     * pre-conditions:
-     *  there is an object in the queue 
-     * post-conditions:
-     *  the object at the front of the queue is removed and returned. 
-     *  the size is reduced by 1 
-     * 
-     * @return the object at the front of the queue
-     * @throws an exception if the list is empty
+     * @return the front element of the queue
+     * @throws NoSuchElementException if the queue is empty
      */
-    public E unqueue();
+    T dequeue();
 
     /**
-     * isEmpty will return true if it is empty and false if there is still items
-     * within.
+     * Returns the front element of the queue without removing it.
      *
-     * pre-conditions:
-     * no precondition is required for this boolean return
-     * post-conditions:
-     *that a boolean is returned depending on if the queue is empty or not
-     * @return a boolean
+     * @return the front element of the queue
+     * @throws NoSuchElementException if the queue is empty
      */
-    public boolean isEmpty();
+    T first();
 
     /**
-     * size will return the current number of elements within the queue
+     * Returns true if the queue contains no elements.
      *
-     * pre-conditions:
-     * this does not require any pre conditions
-     * post-conditions:
-     * an integer being returned that specifies how many elements are inside the queue. 
-     *
-     * @return the number of elements
+     * @return true if the queue is empty, false otherwise
      */
-    public int size();
+    boolean isEmpty();
 
     /**
-     * Opposite of isEmpty. will return true if the queue is full, and false
-     * when it is not.
-     * pre-conditions:
-     *  this depends on wether or not the queue has a specified set size or not
-     * post-conditions:
-     * returns a boolean based on wether or not the size is at the set cap or not
+     * Returns the number of elements in the queue.
      *
-     * @return a boolean
+     * @return the number of elements in the queue
      */
-    public boolean isFull();
-
+    int size();
 }
