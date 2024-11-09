@@ -6,7 +6,7 @@ package implementations;
 
 /**
  *
- * @author jones
+ * @author Marian
  */
 public class MyDLLNode<E> {
     E data;
