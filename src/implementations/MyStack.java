@@ -14,49 +14,84 @@ import utilities.StackADT;
  */
 public class MyStack<E> implements StackADT<E> {
 
+    MyArrayList<E> stack;
+    int size;
+    int capacity;
+    
+    
+        public MyStack(){
+        this.capacity = 10;
+        stack = new MyArrayList<>();
+    }
+
+
+    
+    public MyStack(int capacity) {
+        this.capacity = capacity;
+        stack = new MyArrayList<>();
+    }
     @Override
     public void push(E toAdd) throws NullPointerException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (toAdd == null){
+            throw new NullPointerException();
+        }
+        stack.add(0, toAdd);
+        size++;
     }
 
     @Override
     public E pop() throws EmptyStackException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (size == 0 ){
+            throw new EmptyStackException();
+        }
+        E removed = stack.get(0);
+        stack.remove(0);
+        size--;
+        return removed;
     }
 
     @Override
     public E peek() throws EmptyStackException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+            if (size == 0 ){
+            throw new EmptyStackException();
+        }
+         return stack.get(0);
+             
     }
 
     @Override
     public void clear() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+       stack.clear();
+       size = 0;
     }
 
     @Override
     public boolean isEmpty() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return stack.isEmpty();
     }
 
     @Override
     public Object[] toArray() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return stack.toArray();
     }
 
     @Override
     public E[] toArray(E[] holder) throws NullPointerException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return stack.toArray(holder);
     }
 
     @Override
     public boolean contains(E toFind) throws NullPointerException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (toFind == null){
+            throw new NullPointerException();
+        }
+        return stack.contains(toFind);
     }
 
     @Override
     public int search(E toFind) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        //need iterator
+        throw new UnsupportedOperationException("Not supported yet."); 
     }
 
     @Override
@@ -71,7 +106,7 @@ public class MyStack<E> implements StackADT<E> {
 
     @Override
     public int size() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return size;
     }
 
     @Override
