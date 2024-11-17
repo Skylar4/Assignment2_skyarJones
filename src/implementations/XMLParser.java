@@ -67,7 +67,7 @@ public class XMLParser {
             String tagName = tag.split("\\s+")[0]; // Get the string before any space
 
             if (isSelfClosing(tag)) {
-                // Self-closing tag, ignore
+                continue;
             } else if (isEndTag(tag)) {
                 tagName = tagName.substring(1).trim();
                 if (!stack.isEmpty() && matches(stack.peek().tagName, tagName)) {
