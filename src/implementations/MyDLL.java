@@ -11,7 +11,7 @@ import utilities.ListADT;
 
 /**
  *
- * @author Skylar
+ * @author Marian
  */
 public class MyDLL<E> implements ListADT<E> {
 
