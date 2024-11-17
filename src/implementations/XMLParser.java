@@ -6,7 +6,6 @@ package implementations;
 
 import exceptions.EmptyQueueException;
 import exceptions.EmptyStackException;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -20,116 +19,170 @@ import java.util.logging.Logger;
 public class XMLParser {
 
     File file;
-    //for storing the tags
-    MyStack<String> tags;
-    //for storing the errors that come up and what line they happen on.
-    MyQueue<String> errors;
-    MyQueue<String> extras;
+    //for storing the stack
+    MyStack<TagInfo> stack;
+    //for storing the errorQ that come up and what line they happen on.
+    MyQueue<String> errorQ;
+    MyQueue<String> extrasQ;
 
     public XMLParser(File file) {
         this.file = file;
-        this.tags = new MyStack();
-        this.errors = new MyQueue();
-        this.extras = new MyQueue();
+        this.stack = new MyStack<>();
+        this.errorQ = new MyQueue<>();
+        this.extrasQ = new MyQueue<>();
 
     }
 
-    public void parse() {
-
+    public void parse() throws EmptyQueueException, EmptyStackException {
         int lineNumber = 1;
         try (Scanner scanner = new Scanner(file)) {
-
             while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                lineParse(line, lineNumber);
+                String line = scanner.nextLine().trim();
+                if (!line.isEmpty() && !line.startsWith("<?xml")) {
+                    lineParse(line, lineNumber);
+                }
                 lineNumber++;
-
             }
-
+            checkUnmatchedTags();
         } catch (FileNotFoundException ex) {
             Logger.getLogger(XMLParser.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public void lineParse(String line, int lineNumber) {
-        //need to find the self closing tags <tag/>
-        // start tags <tag> and end tags </tag>
-        // we ignore the self closing
-        // for start tags push them on to the top of the stack
-        //for end tags check them with the top of the stack if they  match, pop it.
-        //if not add it to the error queue and move on. 
+    public void lineParse(String line, int lineNumber) throws EmptyQueueException {
         int index = 0;
-
         while (index < line.length()) {
-
-            // finding the start of a tag.      
             int startOfTag = line.indexOf("<", index);
-            // if start of tag doesnt find the start of a tag it breaks out of the function
             if (startOfTag == -1) {
                 return;
             }
-            //find the index of the ned of the tag.
-            int endOfTag = line.indexOf(">", index);
-            // sets the index at just after the end of the tag to look for another on the same line
-            index = endOfTag + 1;
-            //checks if the tag is self closing if it is is loops around. 
-            if (line.charAt(endOfTag - 1) == '/') {
-                continue;
+
+            int endOfTag = line.indexOf(">", startOfTag);
+            if (endOfTag == -1) {
+                errorQ.enqueue("Error at line " + lineNumber + ": Malformed tag");
+                return;
             }
 
-            // cutting the tag out of the line
-            String tag = line.substring(startOfTag, endOfTag);
-            // checks if it is not an ending tag then adds it to the top of the stack
-            if (line.charAt(startOfTag + 1) != '/') {
-                tags.push(tag);
-            }
-            //checks if the tag is an ending tag
-            if (tag.charAt(startOfTag + 1) == '/') {
-                //working with a ending tag, so we have to see if it has a matching start tag 
-                // checks to see if the tags stack is empty
-                if (tags.isEmpty()) {
-                    errors.enqueue(tag + ";" + lineNumber);
+            String tag = line.substring(startOfTag + 1, endOfTag).trim();
+            String tagName = tag.split("\\s+")[0]; // Get the string before any space
 
-                }
-                String topTag = tags.peek();
-                topTag = topTag.substring(1, topTag.length() - 1);
-                String InsideOfTag = tag.substring(2, tag.length() - 1);
-
-                //if the tags match pop the tag off the stack.
-                if (topTag.equals(InsideOfTag)) {
-
-                    tags.pop();
-
-                } else if (!topTag.equals(InsideOfTag)) {
-                    // if the closing tag doesnt match the top tag, add it to the error queue
-                    errors.enqueue(tag + ":" + lineNumber);
+            if (isSelfClosing(tag)) {
+                // Self-closing tag, ignore
+            } else if (isEndTag(tag)) {
+                tagName = tagName.substring(1).trim();
+                if (!stack.isEmpty() && matches(stack.peek().tagName, tagName)) {
+                    stack.pop();
+                } else if (!errorQ.isEmpty() && errorQ.peek().equals(tagName)) {
+                    errorQ.dequeue();
+                } else if (stack.isEmpty()) {
+                    errorQ.enqueue("Error at line " + lineNumber + ": Unmatched closing tag " + tagName);
                 } else {
-
+                    handleUnmatchedEndTag(tagName, lineNumber);
                 }
+            }  else if (isStartTag(tag)) {
+                stack.push(new TagInfo(tagName, lineNumber));
+            } else {
+                errorQ.enqueue("Error at line " + lineNumber + ": Invalid tag " + tagName);
+            }
+            index = endOfTag + 1;
+        }
+    }
 
+    
+    private void handleUnmatchedEndTag(String tagName, int lineNumber) throws EmptyQueueException {
+        boolean found = false;
+        MyStack<TagInfo> tempStack = new MyStack<>();
+        while (!stack.isEmpty()) {
+            TagInfo topTag = stack.pop();
+            tempStack.push(topTag);
+            if (topTag.tagName.equals(tagName)) {
+                found = true;
+                break;
             }
         }
-
-    }
-
-    private void checkUnmatchedTags() {
-        while (!tags.isEmpty()) {
-            errors.enqueue("Unmatched opening tag: " + tags.pop());
+        while (!tempStack.isEmpty()) {
+            TagInfo tempTag = tempStack.pop();
+            if (found) {
+                stack.push(tempTag);
+            } else {
+                errorQ.enqueue("Error at line " + lineNumber + ": Unmatched tag " + tempTag.tagName);
+            }
+        }
+        if (!found) {
+            errorQ.enqueue("Error at line " + lineNumber + ": Unmatched closing tag " + tagName);
         }
     }
 
+    private boolean isSelfClosing(String tag) {
+        return tag.endsWith("/");
+    }
+
+    private boolean isStartTag(String tag) {
+        return !tag.startsWith("/") && !isSelfClosing(tag);
+    }
+
+    private boolean isEndTag(String tag) {
+        return tag.startsWith("/");
+    }
+
+    private boolean matches(String startTag, String endTag) {
+        return startTag.equals(endTag);
+    }
+
+
+    // Method to check for unmatched stack after parsing all lines
+    private void checkUnmatchedTags() throws EmptyQueueException {
+        while (!stack.isEmpty()) { // While there are unmatched stack in the stack
+            TagInfo unmatchedTag = stack.pop(); // Pop each unmatched tag
+            errorQ.enqueue("Unmatched opening tag: " + unmatchedTag);
+        }
+        while (!errorQ.isEmpty() && !extrasQ.isEmpty()) { // If either queue is empty (but not both), report each element in both queues as error
+            if (!errorQ.peek().equals(extrasQ.peek())) {
+                errorQ.dequeue();
+            } else {
+                errorQ.dequeue();
+                extrasQ.dequeue();
+            }
+        }
+    }
+
+    // Method to print errorQ and extra content
     public void printErrors() throws EmptyQueueException {
-        while (!errors.isEmpty()) {
-            System.out.println(errors.dequeue());
+        System.out.println("=============ERROR LOG=============="); // Print error log header
+        if (errorQ.isEmpty() && extrasQ.isEmpty()) { // If no errorQ or extra content, print no errorQ found
+            System.out.println("No errors found.");
+        } else { // Otherwise, print errorQ and extra content
+            while (!errorQ.isEmpty()) {
+                System.out.println(errorQ.dequeue());
+            }
+            while (!extrasQ.isEmpty()) {
+                System.out.println("Extra content: " + extrasQ.dequeue());
+            }
         }
     }
 
-    public static void main(String[] args) throws EmptyQueueException {
+    // Inner class to store tag information
+    private static class TagInfo {
+
+        String tagName;
+        int lineNumber;
+
+        TagInfo(String tagName, int lineNumber) {
+            this.tagName = tagName;
+            this.lineNumber = lineNumber;
+        }
+    }
+
+    public static void main(String[] args) throws EmptyQueueException, EmptyStackException {
         if (args.length != 1) {
-            System.err.println("Usage: java XMLParser <file-path>");
+            System.err.println("Usage: java -jar Parser.jar <file-path>");
             return;
         }
         File file = new File(args[0]);
+        if (!file.exists()) {
+            System.err.println("File not found: " + file.getAbsolutePath());
+            return;
+        }
         XMLParser parser = new XMLParser(file);
         parser.parse();
         parser.printErrors();

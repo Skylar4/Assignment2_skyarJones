@@ -24,18 +24,17 @@ public class MyStack<E> implements StackADT<E> {
         stack = new MyArrayList<>();
     }
 
-
-    
     public MyStack(int capacity) {
         this.capacity = capacity;
         stack = new MyArrayList<>();
     }
+    
     @Override
-    public void push(E toAdd) throws NullPointerException {
-        if (toAdd == null){
+    public void push(E tag) throws NullPointerException {
+        if (tag == null){
             throw new NullPointerException();
         }
-        stack.add(0, toAdd);
+        stack.add(0, tag);
         size++;
     }
 
