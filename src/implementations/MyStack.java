@@ -88,20 +88,43 @@ public class MyStack<E> implements StackADT<E> {
         return stack.contains(toFind);
     }
 
-    @Override
+@Override
     public int search(E toFind) {
-        //need iterator
-        throw new UnsupportedOperationException("Not supported yet."); 
+        if (toFind == null) {
+            throw new NullPointerException("Element cannot be null");
+        }
+        Iterator<E> iterator = stack.iterator();
+        int index = 0;
+        while (iterator.hasNext()) {
+            if (iterator.next().equals(toFind)) {
+                return size - index; // 1-based position from the top of the stack
+            }
+            index++;
+        }
+        return -1;
     }
 
     @Override
     public Iterator<E> iterator() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return stack.iterator();
     }
 
     @Override
     public boolean equals(StackADT<E> that) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (that == null) {
+            return false;
+        }
+        if (this.size != that.size()) {
+            return false;
+        }
+        Iterator<E> thisIterator = this.iterator();
+        Iterator<E> thatIterator = that.iterator();
+        while (thisIterator.hasNext() && thatIterator.hasNext()) {
+            if (!thisIterator.next().equals(thatIterator.next())) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
@@ -111,7 +134,7 @@ public class MyStack<E> implements StackADT<E> {
 
     @Override
     public boolean stackOverflow() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return size >= capacity;
     }
 
 
