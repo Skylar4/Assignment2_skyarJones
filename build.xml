@@ -70,4 +70,45 @@
     nbproject/build-impl.xml file. 
 
     -->
+    <description>
+        Build file for the XMLParser project.
+    </description>
+
+    <!-- Set global properties for this build -->
+    <property name="src.dir" value="src"/>
+    <property name="build.dir" value="build"/>
+    <property name="classes.dir" value="${build.dir}/classes"/>
+    <property name="jar.dir" value="${build.dir}/jar"/>
+    <property name="jar.name" value="XMLParser.jar"/>
+
+    <!-- Initialize the build directory -->
+    <target name="init">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${classes.dir}"/>
+        <mkdir dir="${jar.dir}"/>
+    </target>
+
+    <!-- Compile the source code -->
+    <target name="compile" depends="init">
+        <javac srcdir="${src.dir}" destdir="${classes.dir}">
+            <include name="**/*.java"/>
+             <compilerarg value="-Xlint:unchecked"/>
+        </javac>
+    </target>
+
+    <!-- Create the JAR file -->
+    <target name="jar" depends="compile">
+        <jar destfile="${basedir}/${jar.name}" basedir="${classes.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="implementations.XMLParser"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <!-- Clean the build directory -->
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+
+
 </project>
