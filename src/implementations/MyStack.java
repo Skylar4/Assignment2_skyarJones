@@ -96,7 +96,7 @@ public class MyStack<E> implements StackADT<E> {
         int index = 0;
         while (iterator.hasNext()) {
             if (iterator.next().equals(toFind)) {
-                return size - index; // 1-based position from the top of the stack
+                return index + 1; // 1-based position from the top of the stack
             }
             index++;
         }
