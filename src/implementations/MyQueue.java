@@ -12,6 +12,9 @@ import utilities.QueueADT;
 
 /**
  *
+ *  * A generic queue implementation using a doubly linked list. This class supports typical queue operations
+ * such as enqueue, dequeue, peek, and checking if the queue is empty or full.
+ * 
  * @author jones
  */
 public class MyQueue<E> implements QueueADT<E> {
@@ -21,12 +24,21 @@ public class MyQueue<E> implements QueueADT<E> {
     int capacity;
 
     
+     /**
+     * Constructs a new queue with the default capacity of 10.
+     */
+    
     public MyQueue(){
         this.capacity = 10;
         queue = new MyDLL<>();
     }
 
 
+      /**
+     * Constructs a new queue with the specified capacity.
+     *
+     * @param capacity the maximum capacity of the queue
+     */
     
     public MyQueue(int capacity) {
         this.capacity = capacity;
@@ -34,6 +46,14 @@ public class MyQueue<E> implements QueueADT<E> {
     }
     
 
+     /**
+     * Adds an element to the back of the queue.
+     *
+     * @param toAdd the element to be added to the queue
+     * @throws NullPointerException if the specified element is {@code null}
+     * @throws FullQueueException if the queue is full
+     */
+    
     @Override
     public void enqueue(E toAdd) throws NullPointerException {
         if (toAdd == null){
@@ -46,6 +66,13 @@ public class MyQueue<E> implements QueueADT<E> {
         size++;
     }
 
+    /**
+     * Removes and returns the element at the front of the queue.
+     *
+     * @return the element that was removed from the front of the queue
+     * @throws EmptyQueueException if the queue is empty
+     */
+    
     @Override
     public E dequeue() throws EmptyQueueException {
        if (isEmpty()){
@@ -58,6 +85,13 @@ public class MyQueue<E> implements QueueADT<E> {
        
     }
 
+     /**
+     * Returns the element at the front of the queue without removing it.
+     *
+     * @return the element at the front of the queue
+     * @throws EmptyQueueException if the queue is empty
+     */
+    
     @Override
     public E peek() throws EmptyQueueException {
          if (isEmpty()){
@@ -65,17 +99,36 @@ public class MyQueue<E> implements QueueADT<E> {
        } 
        return queue.get(0);
     }
+    
+    /**
+     * Removes all elements from the queue.
+     */
 
     @Override
     public void dequeueAll() {
         queue.clear();
         size = 0;
     }
+    
+     /**
+     * Checks if the queue is empty.
+     *
+     * @return {@code true} if the queue is empty, {@code false} otherwise
+     */
 
     @Override
     public boolean isEmpty() {
         return size <= 0;
     }
+    
+    /**
+     * Checks if the queue contains the specified element.
+     *
+     * @param toFind the element to search for
+     * @return {@code true} if the queue contains the element, {@code false} otherwise
+     * @throws NullPointerException if the specified element is {@code null}
+     */
+    
 
     @Override
     public boolean contains(E toFind) throws NullPointerException {
@@ -85,17 +138,38 @@ public class MyQueue<E> implements QueueADT<E> {
       return queue.contains(toFind);
     }
 
+     /**
+     * Searches for the specified element in the queue.
+     *
+     * @param toFind the element to search for
+     * @return the index of the element, or -1 if not found
+     * @throws UnsupportedOperationException since this method is not supported
+     */
+    
     @Override
     public int search(E toFind) {
 
                throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
+     /**
+     * Returns an iterator over the elements in the queue.
+     *
+     * @return an iterator over the elements in the queue
+     */
+    
     @Override
     public Iterator<E> iterator() {
         return new MyQueueIterator();
     }
 
+      /**
+     * Checks if this queue is equal to another queue.
+     *
+     * @param that the queue to compare to
+     * @return {@code true} if the two queues are equal, {@code false} otherwise
+     */
+    
     @Override
     public boolean equals(QueueADT<E> that) {
         
@@ -115,11 +189,26 @@ public class MyQueue<E> implements QueueADT<E> {
 
     }
 
+     /**
+     * Converts the queue to an array.
+     *
+     * @return an array containing all elements in the queue
+     */
+    
     @Override
     public Object[] toArray() {
 
         return queue.toArray();
     }
+    
+      /**
+     * Converts the queue to an array, storing the elements in the specified array.
+     *
+     * @param holder the array to hold the elements
+     * @return the array containing the elements in the queue
+     * @throws NullPointerException if the specified array is {@code null}
+     */
+    
 
     @Override
     public E[] toArray(E[] holder) throws NullPointerException {
@@ -130,6 +219,12 @@ public class MyQueue<E> implements QueueADT<E> {
         return queue.toArray(holder);
     }
 
+      /**
+     * Checks if the queue is full.
+     *
+     * @return {@code true} if the queue is full, {@code false} otherwise
+     */
+    
     @Override
     public boolean isFull() {
         if (size == capacity){
@@ -139,14 +234,25 @@ public class MyQueue<E> implements QueueADT<E> {
             return false;
         }
     }
+    
+      /**
+     * Returns the current size of the queue.
+     *
+     * @return the size of the queue
+     */
 
     @Override
     public int size() {
         return size;
     }
     
+    
+     /**
+     * An iterator for the queue that allows traversal through the elements.
+     *  @return {@code true} if there is a next element, {@code false} otherwise
+     */
 
-  public class MyQueueIterator implements Iterator <E>{
+    public class MyQueueIterator implements Iterator <E>{
           int index = 0;
         @Override
         public boolean hasNext() {
@@ -157,6 +263,13 @@ public class MyQueue<E> implements QueueADT<E> {
             }
 
         }
+        
+         /**
+         * Returns the next element in the queue.
+         *
+         * @return the next element
+         * @throws NoSuchElementException if there are no more elements
+         */
 
         @Override
         public E next() throws NoSuchElementException {
