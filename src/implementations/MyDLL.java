@@ -8,8 +8,6 @@ import java.util.NoSuchElementException;
 import utilities.Iterator;
 import utilities.ListADT;
 
-
-
 /**
  * A doubly linked list implementation of the {@link ListADT} interface.
  * This class provides methods for adding, removing, retrieving, and 
@@ -248,6 +246,10 @@ public class MyDLL<E> implements ListADT<E> {
         return oldData;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public boolean isEmpty() {
         return size == 0;

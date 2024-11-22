@@ -27,6 +27,10 @@ public class XMLParser {
 
     static boolean errorsFound = false; // Flag to track if errors were printed
 
+    /**
+     *
+     * @param file
+     */
     public XMLParser(File file) {
         this.file = file;
         this.stack = new MyStack<>();
@@ -35,6 +39,11 @@ public class XMLParser {
 
     }
 
+    /**
+     *
+     * @throws EmptyQueueException
+     * @throws EmptyStackException
+     */
     public void parse() throws EmptyQueueException, EmptyStackException {
         int lineNumber = 1;
         try (Scanner scanner = new Scanner(file)) {
@@ -51,6 +60,12 @@ public class XMLParser {
         }
     }
 
+    /**
+     *
+     * @param line
+     * @param lineNumber
+     * @throws EmptyQueueException
+     */
     public void lineParse(String line, int lineNumber) throws EmptyQueueException {
         int index = 0;
         while (index < line.length()) {
@@ -186,6 +201,12 @@ public class XMLParser {
         }
     }
 
+    /**
+     *
+     * @param args
+     * @throws EmptyQueueException
+     * @throws EmptyStackException
+     */
     public static void main(String[] args) throws EmptyQueueException, EmptyStackException {
         if (args.length != 1) {
             System.err.println("Usage: java -jar Parser.jar <file-path>");
