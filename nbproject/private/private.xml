@@ -3,10 +3,17 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/R:/Java/assigmnet_2_robin/Assignment2_skyarJones-main/res/sample1.xml</file>
+            <file>file:/R:/Java/assigmnet_2_robin/Assignment2_skyarJones-main/src/utilities/StackADT.java</file>
+            <file>file:/R:/Java/assigmnet_2_robin/Assignment2_skyarJones-main/src/implementations/MyDLL.java</file>
+            <file>file:/R:/Java/assigmnet_2_robin/Assignment2_skyarJones-main/src/implementations/MyArrayList.java</file>
             <file>file:/R:/Java/assigmnet_2_robin/Assignment2_skyarJones-main/src/implementations/XMLParser.java</file>
+            <file>file:/R:/Java/assigmnet_2_robin/Assignment2_skyarJones-main/src/implementations/MyDLLNode.java</file>
             <file>file:/R:/Java/assigmnet_2_robin/Assignment2_skyarJones-main/src/implementations/MyQueue.java</file>
-            <file>file:/R:/Java/assigmnet_2_robin/Assignment2_skyarJones-main/res/sample2.xml</file>
+            <file>file:/R:/Java/assigmnet_2_robin/Assignment2_skyarJones-main/src/utilities/ListADT.java</file>
+            <file>file:/R:/Java/assigmnet_2_robin/Assignment2_skyarJones-main/src/implementations/MyStack.java</file>
+            <file>file:/R:/Java/assigmnet_2_robin/Assignment2_skyarJones-main/src/utilities/MyDLL.java</file>
+            <file>file:/R:/Java/assigmnet_2_robin/Assignment2_skyarJones-main/src/utilities/QueueADT.java</file>
+            <file>file:/R:/Java/assigmnet_2_robin/Assignment2_skyarJones-main/src/utilities/MyDLLNode.java</file>
         </group>
     </open-files>
 </project-private>
