@@ -14,6 +14,7 @@ import utilities.StackADT;
  * such as push, pop, peek, and checking if the stack is empty or full.
  * 
  * @author jones
+ * @param <E>
  */
 public class MyStack<E> implements StackADT<E> {
 
@@ -178,7 +179,6 @@ public class MyStack<E> implements StackADT<E> {
     /**
      * Searches for the specified element in the stack.
      *
-     * @param toFind the element to search for
      * @return the 1-based index of the element from the top of the stack, or -1 if not found
      * @throws NullPointerException if the specified element is {@code null}
      */

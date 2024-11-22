@@ -16,6 +16,7 @@ import utilities.QueueADT;
  * such as enqueue, dequeue, peek, and checking if the queue is empty or full.
  * 
  * @author jones
+ * @param <E>
  */
 public class MyQueue<E> implements QueueADT<E> {
     
@@ -31,8 +32,6 @@ public class MyQueue<E> implements QueueADT<E> {
         this.capacity = 10;
         queue = new MyDLL<>();
     }
-
-
     
     /**
      * Constructs a new queue with the specified capacity.
@@ -51,7 +50,6 @@ public class MyQueue<E> implements QueueADT<E> {
      *
      * @param toAdd the element to be added to the queue
      * @throws NullPointerException if the specified element is {@code null}
-     * @throws FullQueueException if the queue is full
      */
     
     @Override

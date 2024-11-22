@@ -8,6 +8,7 @@ package implementations;
  *
  *  A node in a doubly linked list, holding an element and references to both the next and previous nodes.
  * @author Marian
+ * @param <E>
  */
 public class MyDLLNode<E> {
     E data;
