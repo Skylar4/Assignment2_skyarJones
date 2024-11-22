@@ -177,7 +177,8 @@ public interface ListADT<E> extends Serializable
 
 	/**
 	 * Returns an iterator over the elements in this list, in proper sequence.
-	 * 
+	 * Returns an iterator over the elements in this list, in proper sequence.
+         * 
 	 * @return An iterator over the elements in this list, in proper sequence. NB:
 	 *         The return is of type <code>linearUtilities.Iterator<E></code>, not
 	 *         <code>java.util.Iterator</code>.
