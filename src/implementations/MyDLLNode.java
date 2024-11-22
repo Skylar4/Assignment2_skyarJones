@@ -6,6 +6,7 @@ package implementations;
 
 /**
  *
+ *  A node in a doubly linked list, holding an element and references to both the next and previous nodes.
  * @author Marian
  */
 public class MyDLLNode<E> {
@@ -13,6 +14,11 @@ public class MyDLLNode<E> {
     MyDLLNode<E> next;
     MyDLLNode<E> prev;
 
+     /**
+     * Constructs a new node with the specified data.
+     *
+     * @param data the data to be stored in the node
+     */
     public MyDLLNode(E data) {
         this.data = data;
         this.next = null;
