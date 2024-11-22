@@ -84,11 +84,6 @@ public class XMLParser {
             String fulltag = line.substring(startOfTag, endOfTag + 1);
             String tagName = tag.split("\s+")[0]; // Get the string before any space
 
-            // Check for extra closing tags like >>
-            if (tag.contains(">")) {
-                errorQ.enqueue("Invalid close tag at " + lineNumber + "\n\t" + fulltag);
-            }
-
             if (isSelfClosing(tag)) {
                 //reverting to just ignore
             } else if (isEndTag(tag)) {
@@ -134,6 +129,11 @@ public class XMLParser {
                 }
             } else if (isStartTag(tag)) {
                 stack.push(new TagInfo(tagName, lineNumber));
+            }
+
+            // Check for extra closing tags like >>
+            if (tag.contains(">")) {
+                errorQ.enqueue("Invalid close tag at " + lineNumber + "\n\t" + fulltag);
             }
             index = endOfTag + 1;
         }
@@ -212,7 +212,7 @@ public class XMLParser {
             System.err.println("Usage: java -jar Parser.jar <file-path>");
             return;
         }
-        
+
         File file = new File(args[0]);
         if (!file.exists()) {
             System.err.println("File not found: " + file.getAbsolutePath());
